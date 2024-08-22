@@ -1,184 +1,80 @@
+# Projeto de Cadastro de Usuários com Consulta de CEP
 
-# Projeto ViaCep API
-
-Este projeto é uma API construída com Spring Boot que permite aos usuários gerenciar endereços e usuários. A API integra-se ao serviço ViaCep para validar e preencher automaticamente os campos de endereço com base no CEP brasileiro.
-
-## Funcionalidades
-
-- **Gerenciamento de Usuários**: Operações CRUD para usuários.
-- **Gerenciamento de Endereços**: Operações CRUD para endereços associados aos usuários.
-- **Integração com ViaCep**: Busca de dados de endereço com base no CEP e preenchimento automático dos campos de endereço.
-
-## Tecnologias Utilizadas
-
-- **Spring Boot 3.3.2**
-- **Java 17**
-- **MySQL**
-- **Swagger OpenAPI 2.1.0**
-- **Lombok**
-- **HikariCP**
-- **Spring Data JPA**
-- **Spring Web**
-- **Springdoc OpenAPI UI**
+## Descrição Geral
+Este projeto é uma aplicação web full-stack que permite o cadastro de usuários, associando a eles até três endereços consultados via API do ViaCEP. A aplicação é composta por um backend em Spring Boot e um frontend em React, garantindo uma experiência fluida e intuitiva para o usuário final.
 
 ## Estrutura do Projeto
 
+### Backend (Spring Boot)
+
+**Tecnologias Utilizadas:**
+- Java 17
+- Spring Boot 3.3.2
+- JPA/Hibernate
+- MySQL
+- Springdoc OpenAPI (Swagger)
+
+**Arquitetura:**
+- **Controladores (Controllers):** Os controladores são responsáveis por receber as requisições HTTP do frontend, processá-las e retornar uma resposta. Estão localizados no pacote `senac.api.via.cep.controllers`.
+  - `UsuarioController.java`: Gerencia as operações CRUD para os usuários.
+  - `EnderecoController.java`: Gerencia a consulta de CEPs e cadastro de endereços.
+
+- **DTOs (Data Transfer Objects):** Os DTOs são usados para transportar dados entre as camadas da aplicação, especialmente entre o backend e o frontend. Estão no pacote `senac.api.via.cep.dtos`.
+  - `EnderecoDTO.java`: Define a estrutura dos dados de endereço.
+  - `UsuarioDTO.java`: Define a estrutura dos dados do usuário.
+  - `UsuarioComEnderecosDTO.java`: Combina informações de usuários e seus endereços.
+
+- **Entidades (Entities):** As entidades representam as tabelas no banco de dados e estão mapeadas com JPA. Estão localizadas no pacote `senac.api.via.cep.entities`.
+  - `Usuario.java`: Mapeia a tabela `usuario`.
+  - `Endereco.java`: Mapeia a tabela `endereco`.
+
+- **Repositórios (Repositories):** Os repositórios são responsáveis pela comunicação direta com o banco de dados. Estão no pacote `senac.api.via.cep.repositories`.
+  - `UsuarioRepository.java`: Interface que gerencia operações CRUD para a entidade `Usuario`.
+  - `EnderecoRepository.java`: Interface que gerencia operações CRUD para a entidade `Endereco`.
+
+- **Configurações:**
+  - `SwaggerConfig.java`: Configura o Swagger para documentação da API.
+  - `WebConfig.java`: Configurações adicionais do Spring MVC.
+
+### Frontend (React)
+
+**Tecnologias Utilizadas:**
+- React
+- Axios
+- CSS
+
+**Arquitetura:**
+- **Componentes:** Os componentes React são responsáveis por renderizar a interface do usuário e gerenciar o estado da aplicação. Estão localizados no diretório `src/components`.
+  - `CadastroUsuario.js`: Componente principal que gerencia o formulário de cadastro de usuários, incluindo a adição de até três endereços e a consulta de CEPs via API.
+
+- **Estilos:** Os estilos são gerenciados via CSS, proporcionando uma interface simples e intuitiva. Estão localizados no diretório `src/styles`.
+  - `CadastroUsuario.css`: Estiliza o formulário de cadastro de usuários.
+
+- **Configurações e Scripts:**
+  - `index.js`: Ponto de entrada da aplicação React, responsável por renderizar o componente principal na página HTML.
+  - `App.js`: Componente raiz que encapsula toda a aplicação.
+  - `axios`: Biblioteca utilizada para fazer requisições HTTP ao backend.
+
+## Como Funciona
+
+### Backend:
+1. **Cadastro de Usuário:** O `UsuarioController` recebe uma requisição POST com os dados do usuário e seus endereços, salva-os no banco de dados após validar os CEPs.
+2. **Consulta de CEP:** O `EnderecoController` consulta o CEP informado usando a API do ViaCEP, retornando os dados completos do endereço para auto-preenchimento no frontend.
+3. **Documentação:** O Swagger é automaticamente gerado pelo Springdoc e pode ser acessado via `/swagger-ui.html`.
+
+### Frontend:
+1. **Formulário de Cadastro:** O usuário preenche seus dados e pode adicionar até três endereços. Ao informar um CEP, o campo de endereço é automaticamente preenchido com os dados retornados pela API do ViaCEP.
+2. **Validação e Submissão:** Após a validação dos dados, o formulário envia as informações para o backend, que realiza o cadastro no banco de dados.
+3. **Interface:** A interface é simples, focada na usabilidade e intuitividade, garantindo que o usuário final tenha uma experiência agradável.
+
+## Como Executar
+
 ### Backend
-
-O backend foi desenvolvido utilizando Spring Boot e é responsável por gerenciar a lógica de negócios, persistência de dados, e integração com o serviço ViaCep.
-
-#### Estrutura de Pacotes
-
-```
-via.cep/
-├── src/
-│   ├── main/
-│       ├── java/
-│       │   └── senac/api/via/cep/
-│       │       ├── Application.java
-│       │       ├── SwaggerConfig.java
-│       │       ├── WebConfig.java
-│       │       ├── controllers/
-│       │       │   ├── UsuarioController.java
-│       │       │   └── EnderecoController.java
-│       │       ├── dtos/
-│       │       │   ├── EnderecoDTO.java
-│       │       │   └── UsuarioDTO.java
-│       │       │   └── UsuarioComEnderecosDTO.java
-│       │       ├── entities/
-│       │       │   ├── Usuario.java
-│       │       │   └── Endereco.java
-│       │       ├── repositories/
-│       │       │   ├── UsuarioRepository.java
-│       │       │   └── EnderecoRepository.java
-│       └── resources/
-│           └── application.properties
-│           
-│               
-└── pom.xml
-
-
-#### Arquivos Principais
-
-- **Application.java**: Classe principal que inicializa a aplicação Spring Boot.
-- **UsuarioController.java**: Controlador REST responsável pelas operações CRUD relacionadas aos usuários.
-- **EnderecoController.java**: Controlador REST responsável pelas operações CRUD relacionadas aos endereços e pela integração com o serviço ViaCep.
-- **SwaggerConfig.java**: Configuração do Swagger para documentar e testar os endpoints da API.
-- **application.properties**: Arquivo de configuração da aplicação, contendo detalhes como URL do banco de dados, configurações do Hibernate, entre outros.
+1. Clone o repositório e navegue até o diretório do projeto.
+2. Configure o banco de dados MySQL conforme especificado no arquivo `application.properties`.
+3. Execute o comando `mvn spring-boot:run` para iniciar o servidor.
 
 ### Frontend
-
-O frontend foi desenvolvido utilizando React e é responsável por fornecer uma interface de usuário para interagir com a API.
-
-#### Estrutura de Arquivos
-
-```
-src/
-├── components/
-│   └── CadastroUsuario.js
-├── styles/
-│   └── CadastroUsuario.css
-└── App.js
-```
-
-#### Arquivos Principais
-
-- **CadastroUsuario.js**: Componente React que gerencia o formulário de cadastro de usuários e endereços, incluindo a lógica de preenchimento automático do endereço com base no CEP utilizando a API do backend.
-- **CadastroUsuario.css**: Arquivo de estilo para o formulário de cadastro, proporcionando uma interface amigável e intuitiva.
-- **App.js**: Ponto de entrada da aplicação React, onde os componentes são renderizados.
-
-#### Explicação Detalhada
-
-1. **CadastroUsuario.js**: 
-    - Este componente é responsável por capturar as informações do usuário e seus endereços. Ele permite que o usuário adicione até três endereços e faz a validação do CEP em tempo real, utilizando a API do backend para preencher automaticamente os dados do endereço.
-    - Exemplo:
-    ```javascript
-    const handleInputChange = (index, event) => {
-      const { name, value } = event.target;
-      const newEnderecos = usuario.enderecos.map((endereco, idx) => {
-        if (idx === index) {
-          return { ...endereco, [name]: value };
-        }
-        return endereco;
-      });
-      setUsuario({ ...usuario, enderecos: newEnderecos });
-
-      // Se o campo atualizado for o CEP, faça a consulta ao backend
-      if (name === "cep" && value.length === 8) {
-        axios.get(`http://localhost:8080/enderecos/consulta-cep/${value}`)
-          .then(response => {
-            const data = response.data;
-            const enderecoPreenchido = {
-              ...newEnderecos[index],
-              logradouro: data.logradouro || '',
-              bairro: data.bairro || '',
-              localidade: data.localidade || '',
-              uf: data.uf || ''
-            };
-            const enderecosAtualizados = usuario.enderecos.map((endereco, idx) => idx === index ? enderecoPreenchido : endereco);
-            setUsuario({ ...usuario, enderecos: enderecosAtualizados });
-          })
-          .catch(() => {
-            alert('CEP inválido ou não encontrado');
-          });
-      }
-    };
-    ```
-
-2. **CadastroUsuario.css**:
-    - Este arquivo define os estilos para o formulário de cadastro, garantindo que ele seja visualmente agradável e fácil de usar.
-
-## Configuração do Projeto
-
-### Pré-requisitos
-
-- Java 17
-- Maven
-- MySQL
-
-### Instalação
-
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/rafaeldgdf/viacep-api.git
-   ```
-2. Navegue até o diretório do projeto:
-   ```bash
-   cd viacep-api
-   ```
-3. Crie um banco de dados MySQL:
-   ```sql
-   CREATE DATABASE viacep;
-   ```
-4. Atualize as configurações do banco de dados em `src/main/resources/application.properties`:
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/viacep?createDatabaseIfNotExist=true
-   spring.datasource.username=root
-   spring.datasource.password=root
-   ```
-5. Compile e execute o projeto usando Maven:
-   ```bash
-   mvn clean install
-   mvn spring-boot:run
-   ```
-
-### Executando a Aplicação
-
-A aplicação será iniciada em `http://localhost:8080`. Você pode acessar a interface do Swagger para explorar os endpoints da API:
-
-- **Swagger UI**: `http://localhost:8080/swagger-ui/index.html`
-
-## Testes
-
-Execute os testes unitários com:
-```bash
-mvn test
-```
-
-## Autor
-
-- **Rafael Vitor de Oliveira**
-  - [LinkedIn](https://www.linkedin.com/in/rafaelvitor2/)
-  - [GitHub](https://github.com/rafaeldgdf)
-
-```
+1. Navegue até o diretório do frontend.
+2. Instale as dependências com `npm install`.
+3. Execute o comando `npm start` para iniciar a aplicação React.
