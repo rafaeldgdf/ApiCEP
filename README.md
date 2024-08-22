@@ -15,6 +15,11 @@ Este projeto é uma aplicação web full-stack que permite o cadastro de usuári
 - Springdoc OpenAPI (Swagger)
 
 **Arquitetura:**
+
+- **Entidades (Entities):** As entidades representam as tabelas no banco de dados e estão mapeadas com JPA. Estão localizadas no pacote `senac.api.via.cep.entities`.
+  - `Usuario.java`: Mapeia a tabela `usuario`.
+  - `Endereco.java`: Mapeia a tabela `endereco`.
+    
 - **Controladores (Controllers):** Os controladores são responsáveis por receber as requisições HTTP do frontend, processá-las e retornar uma resposta. Estão localizados no pacote `senac.api.via.cep.controllers`.
   - `UsuarioController.java`: Gerencia as operações CRUD para os usuários.
   - `EnderecoController.java`: Gerencia a consulta de CEPs e cadastro de endereços.
@@ -24,13 +29,13 @@ Este projeto é uma aplicação web full-stack que permite o cadastro de usuári
   - `UsuarioDTO.java`: Define a estrutura dos dados do usuário.
   - `UsuarioComEnderecosDTO.java`: Combina informações de usuários e seus endereços.
 
-- **Entidades (Entities):** As entidades representam as tabelas no banco de dados e estão mapeadas com JPA. Estão localizadas no pacote `senac.api.via.cep.entities`.
-  - `Usuario.java`: Mapeia a tabela `usuario`.
-  - `Endereco.java`: Mapeia a tabela `endereco`.
-
 - **Repositórios (Repositories):** Os repositórios são responsáveis pela comunicação direta com o banco de dados. Estão no pacote `senac.api.via.cep.repositories`.
   - `UsuarioRepository.java`: Interface que gerencia operações CRUD para a entidade `Usuario`.
   - `EnderecoRepository.java`: Interface que gerencia operações CRUD para a entidade `Endereco`.
+
+- **Controladores (Controllers):** Os controladores são responsáveis por receber as requisições HTTP do frontend, processá-las e retornar uma resposta. Estão localizados no pacote `senac.api.via.cep.controllers`.
+  - `UsuarioController.java`: Gerencia as operações CRUD para os usuários.
+  - `EnderecoController.java`: Gerencia a consulta de CEPs e cadastro de endereços.
 
 - **Configurações:**
   - `SwaggerConfig.java`: Configura o Swagger para documentação da API.
@@ -60,7 +65,7 @@ Este projeto é uma aplicação web full-stack que permite o cadastro de usuári
 ### Backend:
 1. **Cadastro de Usuário:** O `UsuarioController` recebe uma requisição POST com os dados do usuário e seus endereços, salva-os no banco de dados após validar os CEPs.
 2. **Consulta de CEP:** O `EnderecoController` consulta o CEP informado usando a API do ViaCEP, retornando os dados completos do endereço para auto-preenchimento no frontend.
-3. **Documentação:** O Swagger é automaticamente gerado pelo Springdoc e pode ser acessado via `/swagger-ui.html`.
+3. **Documentação:** O Swagger é automaticamente gerado pelo Springdoc e pode ser acessado via `http://localhost:8080/swagger-ui/index.html#/`.
 
 ### Frontend:
 1. **Formulário de Cadastro:** O usuário preenche seus dados e pode adicionar até três endereços. Ao informar um CEP, o campo de endereço é automaticamente preenchido com os dados retornados pela API do ViaCEP.
@@ -71,8 +76,8 @@ Este projeto é uma aplicação web full-stack que permite o cadastro de usuári
 
 ### Backend
 1. Clone o repositório e navegue até o diretório do projeto.
-2. Configure o banco de dados MySQL conforme especificado no arquivo `application.properties`.
-3. Execute o comando `mvn spring-boot:run` para iniciar o servidor.
+2. Execute o comando mvn spring-boot:run para iniciar o servidor. O banco de dados será criado automaticamente.
+3. Confira a documentação e/ou simule requisições no Swagge `http://localhost:8080/swagger-ui/index.html#/`.
 
 ### Frontend
 1. Navegue até o diretório do frontend.
