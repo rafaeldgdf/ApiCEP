@@ -16,7 +16,5 @@ public class UsuarioDTO {
 
     private Long id;
     private String nome;
-    private List<Endereco> enderecos; 
-    
-
+    private List<EnderecoDTO> enderecos;
 }

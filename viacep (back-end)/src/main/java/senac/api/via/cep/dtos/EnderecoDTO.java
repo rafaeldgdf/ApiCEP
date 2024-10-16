@@ -14,5 +14,4 @@ public class EnderecoDTO {
     private String bairro;
     private String localidade;
     private String uf;
-    private Usuario usuario;
 }

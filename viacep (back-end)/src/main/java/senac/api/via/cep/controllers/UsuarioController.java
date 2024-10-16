@@ -20,15 +20,13 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-    
+
     // CREATE
     @PostMapping
     public ResponseEntity<Usuario> criarUsuario(@RequestBody UsuarioComEnderecosDTO usuarioComEnderecosDTO) {
-        // Cria a entidade Usuario
         Usuario usuario = new Usuario();
         usuario.setNome(usuarioComEnderecosDTO.getNome());
 
-        // Converte a lista de EnderecoDTO para a lista de Endereco, associando ao usuario
         List<Endereco> enderecos = usuarioComEnderecosDTO.getEnderecos().stream().map(dto -> {
             Endereco endereco = new Endereco();
             endereco.setCep(dto.getCep());
@@ -42,10 +40,7 @@ public class UsuarioController {
             return endereco;
         }).collect(Collectors.toList());
 
-        // Associa a lista de endereços ao usuário
         usuario.setEnderecos(enderecos);
-
-        // Salva o usuário e os endereços associados
         Usuario novoUsuario = usuarioRepository.save(usuario);
         return ResponseEntity.ok(novoUsuario);
     }
@@ -56,7 +51,6 @@ public class UsuarioController {
         return usuarioRepository.findAll();
     }
 
-    // READ
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> obterUsuarioPorId(@PathVariable Long id) {
         Optional<Usuario> usuario = usuarioRepository.findById(id);

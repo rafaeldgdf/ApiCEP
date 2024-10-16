@@ -1,5 +1,7 @@
 package senac.api.via.cep.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,5 +34,6 @@ public class Endereco {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
+    @JsonIgnore 
     private Usuario usuario;
 }
