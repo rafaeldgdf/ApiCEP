@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/CadastroUsuario.css';
+import AtivarGeolocalizacao from './AtivarGeolocalizacao'; // Componente de geolocalização
 
 const CadastroUsuario = () => {
   const [usuario, setUsuario] = useState({
@@ -18,7 +19,6 @@ const CadastroUsuario = () => {
     });
     setUsuario({ ...usuario, enderecos: newEnderecos });
 
-    // Se o campo atualizado for o CEP, faça a consulta ao backend
     if (name === "cep" && value.length === 8) {
       axios.get(`http://localhost:8080/enderecos/consulta-cep/${value}`)
         .then(response => {
@@ -41,13 +41,10 @@ const CadastroUsuario = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    // Prepara os dados para enviar ao backend
     const usuarioDTO = {
       nome: usuario.nome,
       enderecos: usuario.enderecos
     };
-
     axios.post('http://localhost:8080/usuarios', usuarioDTO)
       .then(() => alert('Usuário cadastrado com sucesso!'))
       .catch(() => alert('Erro ao cadastrar usuário.'));
@@ -68,15 +65,22 @@ const CadastroUsuario = () => {
     <div className="container">
       <h2>Cadastro de Usuário</h2>
       <form onSubmit={handleSubmit} className="form">
-        <div className="inputGroup">
-          <label>Nome:</label>
-          <input
-            type="text"
-            name="nome"
-            value={usuario.nome}
-            onChange={(e) => setUsuario({ ...usuario, nome: e.target.value })}
-            required
-          />
+        <div className="nomeGeolocalizacao">
+          <div className="inputGroup">
+            <label>Nome:</label>
+            <input
+              type="text"
+              name="nome"
+              value={usuario.nome}
+              onChange={(e) => setUsuario({ ...usuario, nome: e.target.value })}
+              required
+            />
+          </div>
+
+          {/* Botão de geolocalização ao lado */}
+          <div className="geolocalizacaoContainer">
+            <AtivarGeolocalizacao />
+          </div>
         </div>
 
         {usuario.enderecos.map((endereco, index) => (

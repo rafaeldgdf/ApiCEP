@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CadastroUsuario from './components/CadastroUsuario';
-import ListaUsuarios from './components/ListaUsuarios'; // Certifique-se de que este é o componente certo que você quer usar.
+import ListaUsuarios from './components/ListaUsuarios'; 
 
 function App() {
   const [mostrarUsuarios, setMostrarUsuarios] = useState(false);
@@ -13,7 +13,7 @@ function App() {
   return (
     <div className="App">
       <h1>ViaCEP - Sistema de Cadastro de Endereços</h1>
-      
+
       {/* Formulário de cadastro de usuários */}
       <CadastroUsuario />
 

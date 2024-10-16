@@ -99,3 +99,49 @@ button:disabled {
       grid-template-columns: 1fr;
   }
 }
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+}
+
+.inputGroup {
+  margin-bottom: 15px;
+}
+
+.nomeGeolocalizacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nomeGeolocalizacao .inputGroup {
+  flex-grow: 1;
+}
+
+.geolocalizacaoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px; /* Adiciona espaçamento entre o campo Nome e o botão */
+}
+
+.geolocalizacaoContainer button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.geolocalizacaoContainer button:hover {
+  background-color: #0056b3;
+}
