@@ -66,12 +66,26 @@ public class UsuarioController {
         if (usuarioExistente.isPresent()) {
             Usuario usuarioAtualizado = usuarioExistente.get();
             usuarioAtualizado.setNome(usuarioDetalhes.getNome());
-            usuarioAtualizado.setEnderecos(usuarioDetalhes.getEnderecos());
+            
+            // Atualizar endereços, sem substituir a lista inteira
+            List<Endereco> enderecosExistentes = usuarioAtualizado.getEnderecos();
+            
+            // Limpa a lista de endereços existentes e adiciona os novos endereços
+            enderecosExistentes.clear();
+            
+            // Para cada endereço recebido, associá-lo ao usuário e adicioná-lo à lista existente
+            for (Endereco endereco : usuarioDetalhes.getEnderecos()) {
+                endereco.setUsuario(usuarioAtualizado);  // Certificar que o endereço tem referência ao usuário
+                enderecosExistentes.add(endereco);
+            }
+            
+            usuarioAtualizado.setEnderecos(enderecosExistentes);
             return ResponseEntity.ok(usuarioRepository.save(usuarioAtualizado));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     // DELETE
     @DeleteMapping("/{id}")

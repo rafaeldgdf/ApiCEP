@@ -99,7 +99,7 @@ function ListaUsuarios() {
           {usuarios.map((usuario) => (
             <li key={usuario.id_usuario}> 
               <strong>{usuario.nome}</strong> - 
-              {usuario.enderecos && usuario.enderecos.length > 0 ? usuario.enderecos.cep : 'Sem CEP'} - 
+              {usuario.enderecos && usuario.enderecos.length > 0 ? usuario.enderecos[0].cep : 'Sem CEP'} - 
               Endereços: {usuario.enderecos ? usuario.enderecos.length : 0}
               <button onClick={() => abrirUsuario(usuario)}>Abrir</button>
               <button onClick={() => editarUsuario(usuario)}>Editar</button>
@@ -118,12 +118,16 @@ function ListaUsuarios() {
             {usuarioSelecionado.enderecos && usuarioSelecionado.enderecos.length > 0 ? (
               <div>
                 <h3>Endereço:</h3>
-                <p><strong>CEP:</strong> {usuarioSelecionado.enderecos.cep}</p>
-                <p><strong>Logradouro:</strong> {usuarioSelecionado.enderecos.logradouro}</p>
-                <p><strong>Número:</strong> {usuarioSelecionado.enderecos.numero}</p>
-                <p><strong>Bairro:</strong> {usuarioSelecionado.enderecos.bairro}</p>
-                <p><strong>Localidade:</strong> {usuarioSelecionado.enderecos.localidade}</p>
-                <p><strong>UF:</strong> {usuarioSelecionado.enderecos.uf}</p>
+                {usuarioSelecionado.enderecos.map((endereco, index) => (
+                  <div key={index}>
+                    <p><strong>CEP:</strong> {endereco.cep}</p>
+                    <p><strong>Logradouro:</strong> {endereco.logradouro}</p>
+                    <p><strong>Número:</strong> {endereco.numero}</p>
+                    <p><strong>Bairro:</strong> {endereco.bairro}</p>
+                    <p><strong>Localidade:</strong> {endereco.localidade}</p>
+                    <p><strong>UF:</strong> {endereco.uf}</p>
+                  </div>
+                ))}
               </div>
             ) : (
               <p>Sem endereço cadastrado.</p>
@@ -176,7 +180,7 @@ function ListaUsuarios() {
                     }}
                   />
                 </div>
-                {/* ... outros campos de endereço ... */}
+                {/* Outros campos de endereço */}
                 <div>
                   <label htmlFor={`numero-${index}`}>Número:</label>
                   <input
@@ -186,58 +190,6 @@ function ListaUsuarios() {
                     onChange={(e) => {
                       const novosEnderecos = [...editandoUsuario.enderecos];
                       novosEnderecos[index].numero = e.target.value;
-                      setEditandoUsuario({ ...editandoUsuario, enderecos: novosEnderecos });
-                    }}
-                  />
-                </div>
-                <div>
-                  <label htmlFor={`complemento-${index}`}>Complemento:</label>
-                  <input
-                    type="text"
-                    id={`complemento-${index}`}
-                    value={endereco.complemento}
-                    onChange={(e) => {
-                      const novosEnderecos = [...editandoUsuario.enderecos];
-                      novosEnderecos[index].complemento = e.target.value;
-                      setEditandoUsuario({ ...editandoUsuario, enderecos: novosEnderecos });
-                    }}
-                  />
-                </div>
-                <div>
-                  <label htmlFor={`bairro-${index}`}>Bairro:</label>
-                  <input
-                    type="text"
-                    id={`bairro-${index}`}
-                    value={endereco.bairro}
-                    onChange={(e) => {
-                      const novosEnderecos = [...editandoUsuario.enderecos];
-                      novosEnderecos[index].bairro = e.target.value;
-                      setEditandoUsuario({ ...editandoUsuario, enderecos: novosEnderecos });
-                    }}
-                  />
-                </div>
-                <div>
-                  <label htmlFor={`localidade-${index}`}>Localidade:</label>
-                  <input
-                    type="text"
-                    id={`localidade-${index}`}
-                    value={endereco.localidade}
-                    onChange={(e) => {
-                      const novosEnderecos = [...editandoUsuario.enderecos];
-                      novosEnderecos[index].localidade = e.target.value;
-                      setEditandoUsuario({ ...editandoUsuario, enderecos: novosEnderecos });
-                    }}
-                  />
-                </div>
-                <div>
-                  <label htmlFor={`uf-${index}`}>UF:</label>
-                  <input
-                    type="text"
-                    id={`uf-${index}`}
-                    value={endereco.uf}
-                    onChange={(e) => {
-                      const novosEnderecos = [...editandoUsuario.enderecos];
-                      novosEnderecos[index].uf = e.target.value;
                       setEditandoUsuario({ ...editandoUsuario, enderecos: novosEnderecos });
                     }}
                   />
