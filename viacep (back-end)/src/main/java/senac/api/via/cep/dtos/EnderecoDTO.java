@@ -1,9 +1,13 @@
 package senac.api.via.cep.dtos;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import senac.api.via.cep.entities.Usuario;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
 public class EnderecoDTO {
